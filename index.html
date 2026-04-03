@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forschung: Nick Bostrom & Simulationstheorie</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+            position: relative;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .language-switcher {
+            position: relative;
+            margin: 20px auto 0;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .language-switcher:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .flag {
+            width: 20px;
+            height: 15px;
+            border-radius: 2px;
+            object-fit: cover;
+        }
+
+        .lang-text {
+            color: white;
+        }
+
+        main {
+            padding: 40px 0;
+        }
+
+        section {
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            color: #667eea;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            color: #764ba2;
+            font-size: 1.3em;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        ul {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        .highlight {
+            background: #f0f0f0;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin: 20px 0;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #667eea;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -34px;
+            top: 5px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #667eea;
+        }
+
+        .timeline-date {
+            font-weight: bold;
+            color: #764ba2;
+            font-size: 1.1em;
+        }
+
+        .resources {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .resource-card {
+            background: #f8f8f8;
+            border-radius: 6px;
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .resource-card a {
+            font-weight: bold;
+        }
+
+        footer {
+            background: #333;
+            color: #ccc;
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 40px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+
+        .hypothesis-box {
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            border: 1px solid #667eea;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .hypothesis-box h3 {
+            margin-top: 0;
+            color: #667eea;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+        }
+
+        [data-lang] {
+            display: none;
+        }
+
+        [data-lang].active {
+            display: block;
+        }
+
+        h2[data-lang].active, h3[data-lang].active {
+            display: block;
+        }
+
+        p[data-lang].active, li[data-lang].active {
+            display: block;
+        }
+
+        span[data-lang].active {
+            display: inline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1 data-lang="de">Forschung: Nick Bostrom & Simulationstheorie</h1>
+            <h1 data-lang="en">Research: Nick Bostrom & Simulation Theory</h1>
+            <p data-lang="de">Untersuchung einer konstruierten Persönlichkeit und des Project Blue Beam Kontexts</p>
+            <p data-lang="en">Investigation of a constructed personality and the Project Blue Beam context</p>
+            <button class="language-switcher" id="langSwitcher" onclick="toggleLanguage()">
+                <span id="flagContainer"></span>
+                <span class="lang-text" id="langText">ENGLISH VERSION</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="container">
+        <section>
+            <h2 data-lang="de">Forschungshintergrund</h2>
+            <h2 data-lang="en">Research Background</h2>
+            
+            <p data-lang="de">Diese forensisch-wissenschaftliche Untersuchung analysiert die öffentliche Persona von Nick Bostrom, seine wegweisende Arbeit zur Simulationstheorie und deren möglichen Kontext im Hinblick auf Vorbereitungskampagnen für Massenmanipulationsszenarien.</p>
+            <p data-lang="en">This forensic-scientific investigation analyzes the public persona of Nick Bostrom, his groundbreaking work on simulation theory, and its possible context regarding preparation campaigns for mass manipulation scenarios.</p>
+            
+            <div class="highlight">
+                <strong data-lang="de">Zentrale Hypothese:</strong>
+                <strong data-lang="en">Central Hypothesis:</strong>
+                <span data-lang="de">Die Simulationstheorie könnte als wissenschaftlich verpackte Vorbereitung auf technologisch fortgeschrittene Massenmanipulation dienen – vergleichbar mit den beschriebenen Phasen von Project Blue Beam.</span>
+                <span data-lang="en">The simulation theory could serve as a scientifically packaged preparation for technologically advanced mass manipulation – comparable to the described phases of Project Blue Beam.</span>
+            </div>
+
+            <p data-lang="de">Die Forschung folgt einer strikten, belegbaren Methodik: Alle Entdeckungen werden dokumentiert, verifiziert und mit der Arbeitshypothese in Bezug gesetzt.</p>
+            <p data-lang="en">The research follows a strict, evidence-based methodology: All discoveries are documented, verified, and related to the working hypothesis.</p>
+        </section>
+
+        <section>
+            <h2 data-lang="de">Wer ist Nick Bostrom?</h2>
+            <h2 data-lang="en">Who is Nick Bostrom?</h2>
+            
+            <p data-lang="de"><strong>Nick Bostrom</strong> (*Niklas Boström, *10. März 1973 in Helsingborg, Schweden) ist ein schwedischer Philosoph und Professor an der University of Oxford. Er gilt als einer der prominentesten Vertreter der zeitgenössischen Philosophie zu existenziellen Risiken und künstlicher Intelligenz.</p>
+            <p data-lang="en"><strong>Nick Bostrom</strong> (*Niklas Boström, born March 10, 1973, in Helsingborg, Sweden) is a Swedish philosopher and professor at the University of Oxford. He is considered one of the most prominent representatives of contemporary philosophy on existential risks and artificial intelligence.</p>
+
+            <h3 data-lang="de">Akademische Positionen</h3>
+            <h3 data-lang="en">Academic Positions</h3>
+            <ul>
+                <li data-lang="de">Professor für Philosophie an der University of Oxford</li>
+                <li data-lang="en">Professor of Philosophy at the University of Oxford</li>
+                <li data-lang="de">Gründer des <strong>Future of Humanity Institute</strong> (FHI) an der Oxford University (2005–2024)</li>
+                <li data-lang="en">Founder of the <strong>Future of Humanity Institute</strong> (FHI) at Oxford University (2005–2024)</li>
+                <li data-lang="de">Director des Strategic Artificial Intelligence Research Center</li>
+                <li data-lang="en">Director of the Strategic Artificial Intelligence Research Center</li>
+            </ul>
+
+            <h3 data-lang="de">Wichtige Veröffentlichungen</h3>
+            <h3 data-lang="en">Important Publications</h3>
+            <ul>
+                <li><em>Superintelligence: Paths, Dangers, Strategies</em> (2014)</li>
+                <li><em>Anthropic Bias: Observation Selection Effects in Science and Philosophy</em> (2002)</li>
+                <li><em>Global Catastrophic Risks</em> (<span data-lang="de">Hrsg.</span><span data-lang="en">Ed.</span>, 2008)</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2 data-lang="de">Persönliche Verbindungen & Netzwerk</h2>
+            <h2 data-lang="en">Personal Connections & Network</h2>
+            
+            <h3 data-lang="de">Akademische Mentoren</h3>
+            <h3 data-lang="en">Academic Mentors</h3>
+            <ul>
+                <li data-lang="de"><strong>Colin Howson</strong> & <strong>Craig Callender</strong> – Doktorväter an der LSE (PhD 2000)</li>
+                <li data-lang="en"><strong>Colin Howson</strong> & <strong>Craig Callender</strong> – PhD supervisors at LSE (PhD 2000)</li>
+            </ul>
+
+            <h3 data-lang="de">FHI-Kernmitarbeiter</h3>
+            <h3 data-lang="en">FHI Key Personnel</h3>
+            <ul>
+                <li data-lang="de"><strong>Anders Sandberg</strong> – Senior Research Fellow, enge Forschungspartnerschaft</li>
+                <li data-lang="en"><strong>Anders Sandberg</strong> – Senior Research Fellow, close research partnership</li>
+                <li data-lang="de"><strong>Toby Ord</strong> – Gründer von "Giving What We Can", Effektiver Altruismus</li>
+                <li data-lang="en"><strong>Toby Ord</strong> – Founder of "Giving What We Can", Effective Altruism</li>
+                <li data-lang="de"><strong>Julian Savulescu</strong> – Bioethiker, Co-Editor "Human Enhancement" (2009)</li>
+                <li data-lang="en"><strong>Julian Savulescu</strong> – Bioethicist, Co-Editor "Human Enhancement" (2009)</li>
+                <li data-lang="de"><strong>Stuart Armstrong</strong> – Co-Autor "Smarter Than Us" (2014)</li>
+                <li data-lang="en"><strong>Stuart Armstrong</strong> – Co-Author "Smarter Than Us" (2014)</li>
+                <li data-lang="de"><strong>Robin Hanson</strong> – Ökonom, gemeinsame AI-Policy Arbeiten</li>
+                <li data-lang="en"><strong>Robin Hanson</strong> – Economist, joint AI-Policy work</li>
+            </ul>
+
+            <h3 data-lang="de">Weitere Schlüssel-Verbindungen</h3>
+            <h3 data-lang="en">Additional Key Connections</h3>
+            <ul>
+                <li data-lang="de"><strong>David Pearce</strong> – Co-Gründer Humanity+ (1998), Transhumanismus-Aktivist</li>
+                <li data-lang="en"><strong>David Pearce</strong> – Co-founder Humanity+ (1998), Transhumanism activist</li>
+                <li data-lang="de"><strong>James Hughes</strong> – Co-Gründer IEET (2004)</li>
+                <li data-lang="en"><strong>James Hughes</strong> – Co-founder IEET (2004)</li>
+                <li data-lang="de"><strong>Milan M. Ćirković</strong> – Astronom, Co-Editor "Global Catastrophic Risks" (2008)</li>
+                <li data-lang="en"><strong>Milan M. Ćirković</strong> – Astronomer, Co-Editor "Global Catastrophic Risks" (2008)</li>
+                <li data-lang="de"><strong>Max Tegmark</strong> – MIT, Future of Life Institute</li>
+                <li data-lang="en"><strong>Max Tegmark</strong> – MIT, Future of Life Institute</li>
+                <li data-lang="de"><strong>Carl Shulman</strong> – Open Philanthropy, Co-Autor digitaler Bewusstseine</li>
+                <li data-lang="en"><strong>Carl Shulman</strong> – Open Philanthropy, Co-author digital minds</li>
+                <li data-lang="de"><strong>Elon Musk</strong> – £1 Million FHI-Förderung (2015), gemeinsame Konferenzen</li>
+                <li data-lang="en"><strong>Elon Musk</strong> – £1 million FHI funding (2015), joint conferences</li>
+            </ul>
+
+            <div class="highlight" style="background: #fff3cd; border-left-color: #ffc107;">
+                <h4 data-lang="de" style="margin-top: 0; color: #856404;">Die 2023 Email-Kontroverse</h4>
+                <h4 data-lang="en" style="margin-top: 0; color: #856404;">The 2023 Email Controversy</h4>
+                <p data-lang="de">Im Januar 2023 entschuldigte sich Bostrom für eine 26 Jahre alte Email (ca. 1997) mit angeblich rassistischen Äußerungen. Oxford University untersuchte den Vorfall und fand keine aktuellen rassistischen Überzeugungen.</p>
+                <p data-lang="en">In January 2023, Bostrom apologized for a 26-year-old email (ca. 1997) with allegedly racist remarks. Oxford University investigated and found no current racist beliefs.</p>
+            </div>
+
+            <h3 data-lang="de">Auffällige Zeitlinien-Probleme</h3>
+            <h3 data-lang="en">Timeline Inconsistencies</h3>
+            <ul>
+                <li data-lang="de"><strong>Nahtlose FHI-Gründung (2005):</strong> Direkter Übergang vom Oxford-Fellowship zur Institutsgründung ohne dokumentierte Vorbereitungsphase</li>
+                <li data-lang="en"><strong>Seamless FHI founding (2005):</strong> Direct transition from Oxford Fellowship to institute founding without documented preparation phase</li>
+                <li data-lang="de"><strong>Frühe Organisationstalente:</strong> Mit 25 Jahren (1998) Co-Gründung der World Transhumanist Association</li>
+                <li data-lang="en"><strong>Early organizational talents:</strong> At age 25 (1998), co-founded the World Transhumanist Association</li>
+                <li data-lang="de"><strong>Parallele Projekte:</strong> Gleichzeitige Gründung von IEET (2004), FHI-Vorbereitung und Oxford-Fellowship</li>
+                <li data-lang="en"><strong>Parallel projects:</strong> Simultaneous founding of IEET (2004), FHI preparation and Oxford Fellowship</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2 data-lang="de">Die Simulationstheorie (2003)</h2>
+            <h2 data-lang="en">The Simulation Theory (2003)</h2>
+            
+            <p data-lang="de">Bostroms einflussreichstes Werk ist der 2003 veröffentlichte Aufsatz <em>"Are You Living in a Computer Simulation?"</em>. Darin argumentiert er mathematisch-statistisch, dass mindestens eine der folgenden Aussagen wahr sein müsse:</p>
+            <p data-lang="en">Bostrom's most influential work is the 2003 essay <em>"Are You Living in a Computer Simulation?"</em>. In it, he argues mathematically-statistically that at least one of the following statements must be true:</p>
+            
+            <div class="highlight">
+                <ol>
+                    <li data-lang="de">Die Menschheit wird aussterben, bevor sie eine posthumane Stufe erreicht.</li>
+                    <li data-lang="en">Humanity will go extinct before reaching a posthuman stage.</li>
+                    <li data-lang="de">Eine posthumane Zivilisation wird keine signifikante Anzahl ihrer Vorfahren simulieren.</li>
+                    <li data-lang="en">A posthuman civilization will not run a significant number of ancestor simulations.</li>
+                    <li data-lang="de">Wir leben mit annähernder Sicherheit in einer Computer-Simulation.</li>
+                    <li data-lang="en">We are almost certainly living in a computer simulation.</li>
+                </ol>
+            </div>
+
+            <p data-lang="de">Diese Argumentation verschaffte dem Konzept einer "Matrix-Realität" wissenschaftliche Legitimität und wurde von Medien, Hollywood und der Tech-Elite aufgegriffen.</p>
+            <p data-lang="en">This argumentation gave the concept of a "Matrix reality" scientific legitimacy and was picked up by media, Hollywood, and the tech elite.</p>
+        </section>
+
+        <section>
+            <h2 data-lang="de">Domain- & Zahlen-Anomalien</h2>
+            <h2 data-lang="en">Domain & Number Anomalies</h2>
+
+            <h3 data-lang="de">Die FHI-Domain: futureofhumanityinstitute.org</h3>
+            <h3 data-lang="en">The FHI Domain: futureofhumanityinstitute.org</h3>
+            
+            <div class="highlight" style="background: #ffe6e6; border-left-color: #dc3545;">
+                <strong data-lang="de">Deep Reasoning Ergebnis:</strong>
+                <strong data-lang="en">Deep Reasoning Result:</strong>
+                <span data-lang="de">Eine seriöse Oxford-Institution würde diese Domain <strong>NICHT</strong> wählen.</span>
+                <span data-lang="en">A serious Oxford institution would <strong>NOT</strong> choose this domain.</span>
+            </div>
+
+            <p data-lang="de">Eine normale Oxford-Praxis würde <code>fhi.ox.ac.uk</code> oder <code>oxford-fhi.org</code> wählen – kurz, sachlich, institutionell verankert. Stattdessen:</p>
+            <p data-lang="en">Normal Oxford practice would choose <code>fhi.ox.ac.uk</code> or <code>oxford-fhi.org</code> – short, factual, institutionally anchored. Instead:</p>
+
+            <ul>
+                <li data-lang="de"><strong>.org statt .ox.ac.uk:</strong> Suggeriert NGO-Charakter, nicht Universität</li>
+                <li data-lang="en"><strong>.org instead of .ox.ac.uk:</strong> Suggests NGO character, not university</li>
+                <li data-lang="de"><strong>26 Zeichen Länge:</strong> Übertrieben lang, „catchy", marketing-orientiert</li>
+                <li data-lang="en"><strong>26 characters long:</strong> Excessively long, "catchy", marketing-oriented</li>
+                <li data-lang="de"><strong>„Future of Humanity":</strong> Prophetische/eschatologische Tonalität – erinnert an Sekten oder Science-Fiction, nicht analytische Philosophie</li>
+                <li data-lang="en"><strong>"Future of Humanity":</strong> Prophetic/eschatological tone – reminiscent of cults or science fiction, not analytical philosophy</li>
+                <li data-lang="de"><strong>Kein „Oxford" im Namen:</strong> Freischwebende globale Autorität statt akademischer Zurückhaltung</li>
+                <li data-lang="en"><strong>No "Oxford" in name:</strong> Detached global authority instead of academic restraint</li>
+            </ul>
+
+            <h3 data-lang="de">LSE Thesis: Die Zahl 2642 & Datum 26.01.2026</h3>
+            <h3 data-lang="en">LSE Thesis: The Number 2642 & Date 26.01.2026</h3>
+
+            <p data-lang="de"><strong>Die URL:</strong> <code>http://etheses.lse.ac.uk/2642/</code></p>
+            <p data-lang="en"><strong>The URL:</strong> <code>http://etheses.lse.ac.uk/2642/</code></p>
+
+            <div class="highlight">
+                <strong data-lang="de">Zahlenanalyse 2642:</strong>
+                <strong data-lang="en">Number analysis 2642:</strong>
+                <ul style="margin-top: 10px;">
+                    <li data-lang="de">Faktorisierung: 2642 = 2 × 1321</li>
+                    <li data-lang="en">Factorization: 2642 = 2 × 1321</li>
+                    <li data-lang="de">1321 ist die <strong>216. Primzahl</strong></li>
+                    <li data-lang="en">1321 is the <strong>216th prime number</strong></li>
+                    <li data-lang="de">216 = <strong>6³</strong> (die „heilige" Zahl: 6×6×6)</li>
+                    <li data-lang="en">216 = <strong>6³</strong> (the "holy" number: 6×6×6)</li>
+                    <li data-lang="de">Quersumme: 2+6+4+2 = 14 → 1+4 = <strong>5</strong></li>
+                    <li data-lang="en">Digit sum: 2+6+4+2 = 14 → 1+4 = <strong>5</strong></li>
+                </ul>
+            </div>
+
+            <div class="highlight" style="background: #fff3cd; border-left-color: #ffc107;">
+                <strong data-lang="de">AUSSERGEWÖHNLICH: Das Hinterlegungsdatum</strong>
+                <strong data-lang="en">EXTRAORDINARY: The deposit date</strong>
+                <p data-lang="de"><strong>26 January 2026 (26.01.2026)</strong> – Die Dissertation wurde 2000 fertiggestellt, aber erst <strong>26 Jahre später</strong> digital hinterlegt. Zeitgleich mit dem angeblichen „Ende der Phase 1
+            <div class="timeline">
+                <div class="timeline-item">
+                    <span class="timeline-date">1973</span>
+                    <p data-lang="de">Geburt in Helsingborg, Schweden</p>
+                    <p data-lang="en">Born in Helsingborg, Sweden</p>
+                </div>
+                <div class="timeline-item">
+                    <span class="timeline-date">2002</span>
+                    <p data-lang="de">Veröffentlichung von "Anthropic Bias"</p>
+                    <p data-lang="en">Publication of "Anthropic Bias"</p>
+                </div>
+                <div class="timeline-item">
+                    <span class="timeline-date">2003</span>
+                    <p data-lang="de">Publikation der Simulationstheorie – zeitgleich mit dem Aufstieg des Matrix-Franchise</p>
+                    <p data-lang="en">Publication of Simulation Theory – concurrent with the rise of the Matrix franchise</p>
+                </div>
+                <div class="timeline-item">
+                    <span class="timeline-date">2005</span>
+                    <p data-lang="de">Gründung des Future of Humanity Institute an der Oxford University</p>
+                    <p data-lang="en">Founding of the Future of Humanity Institute at Oxford University</p>
+                </div>
+                <div class="timeline-item">
+                    <span class="timeline-date">2014</span>
+                    <p data-lang="de">"Superintelligence" erreicht breite mediale Aufmerksamkeit</p>
+                    <p data-lang="en">"Superintelligence" gains broad media attention</p>
+                </div>
+                <div class="timeline-item">
+                    <span class="timeline-date">2024</span>
+                    <p data-lang="de">Schließung des Future of Humanity Institute</p>
+                    <p data-lang="en">Closure of the Future of Humanity Institute</p>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2 data-lang="de">Project Blue Beam Kontext</h2>
+            <h2 data-lang="en">Project Blue Beam Context</h2>
+            
+            <div class="warning-box">
+                <strong data-lang="de">Aktueller Status:</strong>
+                <strong data-lang="en">Current Status:</strong>
+                <span data-lang="de">Wir befinden uns im letzten Teil von <strong>Phase 1</strong>. Die Phase 1 endet voraussichtlich am <strong>13. November 2026</strong>.</span>
+                <span data-lang="en">We are currently in the final part of <strong>Phase 1</strong>. Phase 1 is expected to end on <strong>November 13, 2026</strong>.</span>
+            </div>
+
+            <h3 data-lang="de">Ursprünge (Serge Monast, 1994)</h3>
+            <h3 data-lang="en">Origins (Serge Monast, 1994)</h3>
+            
+            <p data-lang="de"><strong>Serge Monast</strong> (1945–1996) war ein kanadischer Journalist und Verschwörungstheoretiker aus Québec. 1994 veröffentlichte er den Artikel "NASA's Project Blue Beam", 1995 das Buch "Les Protokoles de Toronto (6.6.6)".</p>
+            <p data-lang="en"><strong>Serge Monast</strong> (1945–1996) was a Canadian journalist and conspiracy theorist from Québec. In 1994 he published the article "NASA's Project Blue Beam", in 1995 the book "Les Protokoles de Toronto (6.6.6)".</p>
+            
+            <div class="highlight" style="background: #ffe6e6; border-left-color: #dc3545;">
+                <strong data-lang="de">Tod Serge Monasts (Dezember 1996):</strong>
+                <strong data-lang="en">Death of Serge Monast (December 1996):</strong>
+                <span data-lang="de">Offiziell: Herzinfarkt (51 Jahre). Auffällig: Nur 2 Jahre nach Veröffentlichung der Theorie. Monate zuvor wurden seine Kinder staatlicher Vormundschaft unterstellt. Anhänger vermuten Mord.</span>
+                <span data-lang="en">Official: Heart attack (age 51). Notable: Only 2 years after publishing the theory. Months prior his children were taken into state custody. Supporters suspect murder.</span>
+            </div>
+
+            <div class="hypothesis-box">
+                <h3 data-lang="de">Die Vier Phasen</h3>
+                <h3 data-lang="en">The Four Phases</h3>
+                <p data-lang="de">Nach den ursprünglichen Darstellungen (Serge Monast, 1994) umfasst Project Blue Beam vier Phasen:</p>
+                <p data-lang="en">According to the original descriptions (Serge Monast, 1994), Project Blue Beam comprises four phases:</p>
+                <ol>
+                    <li data-lang="de"><strong>Phase 1:</strong> Zerstörung archäologischer Überlieferungen durch künstliche Erdbeben <em>(aktuell aktiv – endet 13.11.2026)</em></li>
+                    <li data-lang="en"><strong>Phase 1:</strong> Destruction of archaeological records through artificial earthquakes <em>(currently active – ends 11/13/2026)</em></li>
+                    <li data-lang="de"><strong>Phase 2:</strong> Globales "Weltraum-Show" mit 3D-Hologrammen religiöser Figuren</li>
+                    <li data-lang="en"><strong>Phase 2:</strong> Global "space show" with 3D holograms of religious figures</li>
+                    <li data-lang="de"><strong>Phase 3:</strong> Telepathische ELF-Kommunikation ("Stimme Gottes" im Kopf)</li>
+                    <li data-lang="en"><strong>Phase 3:</strong> Telepathic ELF communication ("voice of God" in the head)</li>
+                    <li data-lang="de"><strong>Phase 4:</strong> Manifestation des Antichristen als universeller "Messias"</li>
+                    <li data-lang="en"><strong>Phase 4:</strong> Manifestation of the Antichrist as universal "Messiah"</li>
+                </ol>
+            </div>
+
+            <h3 data-lang="de">Evidenzanalyse: Bostrom ↔ Blue Beam</h3>
+            <h3 data-lang="en">Evidence Analysis: Bostrom ↔ Blue Beam</h3>
+            
+            <div class="highlight">
+                <strong data-lang="de">Direkte Verbindungen:</strong>
+                <strong data-lang="en">Direct Connections:</strong>
+                <ul style="margin-top: 10px;">
+                    <li data-lang="de">❌ <strong>KEINE EVIDENZ</strong> für direkte Treffen oder finanzielle Verbindungen</li>
+                    <li data-lang="en">❌ <strong>NO EVIDENCE</strong> for direct meetings or financial connections</li>
+                    <li data-lang="de">❌ Keine Zitate von Bostrom über Blue Beam</li>
+                    <li data-lang="en">❌ No quotes from Bostrom about Blue Beam</li>
+                    <li data-lang="de">❌ Keine gemeinsamen Veröffentlichungen oder Konferenzen</li>
+                    <li data-lang="en">❌ No joint publications or conferences</li>
+                </ul>
+            </div>
+
+            <p data-lang="de"><strong>Indirekte Parallelen (hypothetisch):</strong> Die Simulationstheorie könnte als „intellektuelle Vorbereitung" auf Phase 2–4 dienen – die „wissenschaftliche" Normalisierung der Idee, dass Realität simuliert/artificial sein könnte. Beide verwenden Technologie-Narrative zur „Neudefinition" von Wahrnehmung.</p>
+            <p data-lang="en"><strong>Indirect Parallels (hypothetical):</strong> The simulation theory could serve as "intellectual preparation" for Phases 2-4 – the "scientific" normalization of the idea that reality could be simulated/artificial. Both use technology narratives to "redefine" perception.</p>
+            
+            <p style="font-size: 0.9em; color: #666;">
+                <span data-lang="de">Quellen: Wikipedia Serge Monast | Les Protokoles de Toronto (1995) | Archive.org Blue Beam Dokumente</span>
+                <span data-lang="en">Sources: Wikipedia Serge Monast | Les Protokoles de Toronto (1995) | Archive.org Blue Beam documents</span>
+            </p>
+        </section>
+
+        <section>
+            <h2 data-lang="de">Links & Quellen</h2>
+            <h2 data-lang="en">Links & Sources</h2>
+            
+            <h3 data-lang="de">Primärquellen (Nick Bostrom)</h3>
+            <h3 data-lang="en">Primary Sources (Nick Bostrom)</h3>
+            <div class="resources">
+                <div class="resource-card">
+                    <a href="https://en.wikipedia.org/wiki/Nick_Bostrom" target="_blank">Wikipedia: Nick Bostrom</a>
+                    <p data-lang="de">Biografische Informationen und Überblick über sein Werk</p>
+                    <p data-lang="en">Biographical information and overview of his work</p>
+                </div>
+                <div class="resource-card">
+                    <a href="https://www.nickbostrom.com/" target="_blank" data-lang="de">Offizielle Website</a>
+                    <a href="https://www.nickbostrom.com/" target="_blank" data-lang="en">Official Website</a>
+                    <p data-lang="de">Persönliche Webpräsenz mit Publikationen</p>
+                    <p data-lang="en">Personal web presence with publications</p>
+                </div>
+                <div class="resource-card">
+                    <a href="https://www.nickbostrom.com/cv.pdf" target="_blank">CV (PDF)</a>
+                    <p data-lang="de">Akademischer Lebenslauf und Publikationsliste</p>
+                    <p data-lang="en">Academic CV and publication list</p>
+                </div>
+                <div class="resource-card">
+                    <a href="http://etheses.lse.ac.uk/2642/" target="_blank">PhD Thesis (LSE)</a>
+                    <p data-lang="de">"Observational Selection Effects and Probability" (2000)</p>
+                    <p data-lang="en">"Observational Selection Effects and Probability" (2000)</p>
+                </div>
+                <div class="resource-card">
+                    <a href="https://www.newyorker.com/magazine/2015/11/23/doomsday-invention-artificial-intelligence-nick-bostrom" target="_blank">The New Yorker Profile (2015)</a>
+                    <p data-lang="de">Detailliertes Porträt mit Hintergrundinformationen</p>
+                    <p data-lang="en">Detailed portrait with background information</p>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 30px;" data-lang="de">Simulationstheorie</h3>
+            <h3 style="margin-top: 30px;" data-lang="en">Simulation Theory</h3>
+            <div class="resources">
+                <div class="resource-card">
+                    <a href="https://www.simulation-argument.com/" target="_blank">Simulation Argument Website</a>
+                    <p data-lang="de">Originalquelle der Simulationstheorie</p>
+                    <p data-lang="en">Original source of the simulation theory</p>
+                </div>
+                <div class="resource-card">
+                    <a href="https://www.simulation-argument.com/simulation.pdf" target="_blank">Original Paper (PDF)</a>
+                    <p data-lang="de">"Are You Living in a Computer Simulation?" (2003)</p>
+                    <p data-lang="en">"Are You Living in a Computer Simulation?" (2003)</p>
+                </div>
+                <div class="resource-card">
+                    <a href="https://doi.org/10.1111/1467-9213.00309" target="_blank">DOI Reference</a>
+                    <p>Philosophical Quarterly, Vol. 53, No. 211</p>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 30px;" data-lang="de">Institutionen</h3>
+            <h3 style="margin-top: 30px;" data-lang="en">Institutions</h3>
+            <div class="resources">
+                <div class="resource-card">
+                    <a href="http://www.futureofhumanityinstitute.org/" target="_blank">FHI (archived)</a>
+                    <p>Future of Humanity Institute, Oxford</p>
+                </div>
+                <div class="resource-card">
+                    <a href="https://www.oxfordmartin.ox.ac.uk/" target="_blank">Oxford Martin School</a>
+                    <p data-lang="de">Parent-Institution des FHI</p>
+                    <p data-lang="en">Parent institution of FHI</p>
+                </div>
+                <div class="resource-card">
+                    <a href="https://futureoflife.org/" target="_blank">Future of Life Institute</a>
+                    <p data-lang="de">Finanzierer und Partnerorganisation</p>
+                    <p data-lang="en">Funder and partner organization</p>
+                </div>
+                <div class="resource-card">
+                    <a href="https://www.openphilanthropy.org/grants/university-of-oxford-future-of-humanity-institute/" target="_blank">Open Philanthropy</a>
+                    <p data-lang="de">£13.4 Millionen FHI-Grant (2018)</p>
+                    <p data-lang="en">£13.4 million FHI grant (2018)</p>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 30px;" data-lang="de">Project Blue Beam Quellen</h3>
+            <h3 style="margin-top: 30px;" data-lang="en">Project Blue Beam Sources</h3>
+            <div class="resources">
+                <div class="resource-card">
+                    <a href="https://en.wikipedia.org/wiki/Serge_Monast" target="_blank">Wikipedia: Serge Monast</a>
+                    <p data-lang="de">Biografie des Blue Beam-Autors</p>
+                    <p data-lang="en">Biography of the Blue Beam author</p>
+                </div>
+                <div class="resource-card">
+                    <a href="https://www.amazon.fr/protocoles-Toronto-Serge-Monast/dp/B01M7O8FL0" target="_blank">Les Protokoles de Toronto</a>
+                    <p data-lang="de">Monasts Buch (1995) - Ursprung der Theorie</p>
+                    <p data-lang="en">Monast's book (1995) - origin of the theory</p>
+                </div>
+                <div class="resource-card">
+                    <a href="https://archive.org/details/project-blue-beam-revival-of-the-fake-alien-invasion-technology-serge-monast" target="_blank">Archive.org Blue Beam</a>
+                    <p data-lang="de">Archivierte Dokumente und Materialien</p>
+                    <p data-lang="en">Archived documents and materials</p>
+                </div>
+                <div class="resource-card">
+                    <a href="https://rationalwiki.org/wiki/Serge_Monast" target="_blank">RationalWiki: Serge Monast</a>
+                    <p data-lang="de">Kritische Analyse der Theorie</p>
+                    <p data-lang="en">Critical analysis of the theory</p>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 30px;" data-lang="de">Weitere Biografie-Quellen</h3>
+            <h3 style="margin-top: 30px;" data-lang="en">Additional Biography Sources</h3>
+            <div class="resources">
+                <div class="resource-card">
+                    <a href="https://philopedia.org/thinkers/nick-bostrom/" target="_blank">Philopedia</a>
+                    <p data-lang="de">Philosophische Biografie</p>
+                    <p data-lang="en">Philosophical biography</p>
+                </div>
+                <div class="resource-card">
+                    <a href="https://peoplepill.com/i/nick-bostrom" target="_blank">Peoplepill</a>
+                    <p data-lang="de">Biografische Datenbank</p>
+                    <p data-lang="en">Biographical database</p>
+                </div>
+                <div class="resource-card">
+                    <a href="https://handwiki.org/wiki/Biography:Nick_Bostrom" target="_blank">HandWiki</a>
+                    <p data-lang="de">Wissenschaftliche Biografie</p>
+                    <p data-lang="en">Scientific biography</p>
+                </div>
+                <div class="resource-card">
+                    <a href="https://github.com/thomaswellenfeld/Forschung_NickB" target="_blank">GitHub Repository</a>
+                    <p data-lang="de">Forschungsmaterialien und Dokumentation</p>
+                    <p data-lang="en">Research materials and documentation</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p data-lang="de">Forschungsprojekt zu dokumentarischen und analytischen Zwecken.</p>
+            <p data-lang="en">Research project for documentary and analytical purposes.</p>
+            <p style="margin-top: 10px; font-size: 0.9em;" data-lang="de">Letzte Aktualisierung: April 2026</p>
+            <p style="margin-top: 10px; font-size: 0.9em;" data-lang="en">Last updated: April 2026</p>
+        </div>
+    </footer>
+
+    <script>
+        let currentLanguage = 'de';
+
+        // Flag SVGs as base64 data URIs
+        const flags = {
+            de: `data:image/svg+xml;base64,${btoa('<svg width="20" height="15" viewBox="0 0 20 15" xmlns="http://www.w3.org/2000/svg"><rect width="20" height="5" fill="#000000"/><rect width="20" height="5" y="5" fill="#DD0000"/><rect width="20" height="5" y="10" fill="#FFCE00"/></svg>')}`,
+            at: `data:image/svg+xml;base64,${btoa('<svg width="20" height="15" viewBox="0 0 20 15" xmlns="http://www.w3.org/2000/svg"><rect width="20" height="5" fill="#ED2939"/><rect width="20" height="5" y="5" fill="white"/><rect width="20" height="5" y="10" fill="#ED2939"/></svg>')}`,
+            gb: `data:image/svg+xml;base64,${btoa('<svg width="20" height="15" viewBox="0 0 20 15" xmlns="http://www.w3.org/2000/svg"><rect width="20" height="15" fill="#012169"/><path d="M0,0 L20,15 M20,0 L0,15" stroke="white" stroke-width="3"/><path d="M0,0 L20,15 M20,0 L0,15" stroke="#C8102E" stroke-width="2"/><path d="M10,0 L10,15 M0,7.5 L20,7.5" stroke="white" stroke-width="5"/><path d="M10,0 L10,15 M0,7.5 L20,7.5" stroke="#C8102E" stroke-width="3"/></svg>')}`,
+            us: `data:image/svg+xml;base64,${btoa('<svg width="20" height="15" viewBox="0 0 20 15" xmlns="http://www.w3.org/2000/svg"><rect width="20" height="15" fill="#B22234"/><rect width="8" height="8" fill="#3C3B6E"/><rect width="20" height="1" y="2" fill="white"/><rect width="20" height="1" y="4" fill="white"/><rect width="20" height="1" y="6" fill="white"/><rect width="20" height="1" y="8" fill="white"/><rect width="20" height="1" y="10" fill="white"/><rect width="20" height="1" y="12" fill="white"/><rect width="20" height="1" y="14" fill="white"/></svg>')}`
+        };
+
+        function initLanguage() {
+            const savedLang = localStorage.getItem('preferredLanguage');
+            if (savedLang) {
+                currentLanguage = savedLang;
+            }
+            updatePageLanguage();
+            updateLanguageSwitcher();
+        }
+
+        function toggleLanguage() {
+            currentLanguage = currentLanguage === 'de' ? 'en' : 'de';
+            localStorage.setItem('preferredLanguage', currentLanguage);
+            updatePageLanguage();
+            updateLanguageSwitcher();
+        }
+
+        function updateLanguageSwitcher() {
+            const flagContainer = document.getElementById('flagContainer');
+            const langText = document.getElementById('langText');
+            
+            if (currentLanguage === 'de') {
+                // Currently German -> Show ENGLISH VERSION with UK/US flags
+                flagContainer.innerHTML = `
+                    <img src="${flags.gb}" class="flag" alt="UK">
+                    <img src="${flags.us}" class="flag" alt="US">
+                `;
+                langText.textContent = 'ENGLISH VERSION';
+            } else {
+                // Currently English -> Show DEUTSCHE VERSION with DE/AT flags
+                flagContainer.innerHTML = `
+                    <img src="${flags.de}" class="flag" alt="Germany">
+                    <img src="${flags.at}" class="flag" alt="Austria">
+                `;
+                langText.textContent = 'DEUTSCHE VERSION';
+            }
+        }
+
+        function updatePageLanguage() {
+            // Hide all language-specific elements
+            document.querySelectorAll('[data-lang]').forEach(el => {
+                el.classList.remove('active');
+            });
+            
+            // Show elements for current language
+            document.querySelectorAll(`[data-lang="${currentLanguage}"]`).forEach(el => {
+                el.classList.add('active');
+            });
+            
+            // Update html lang attribute
+            document.documentElement.lang = currentLanguage;
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', initLanguage);
+    </script>
+</body>
+</html>
